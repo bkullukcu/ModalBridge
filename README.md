@@ -80,4 +80,4 @@ This generates both SVG figures in `docs/figures/` from the fixed synthetic exam
 
 ## Citation and license
 
-For attribution and licensing, see [`CITATION.cff`](CITATION.cff) and [`LICENSE`](LICENSE). Cite experimental datasets by their original source.
+**Software authors:** Berkay Kullukcu and Dina Hannebauer. Citation metadata is provided in [`CITATION.cff`](CITATION.cff); license terms are in [`LICENSE`](LICENSE). Cite experimental datasets by their original sources.
