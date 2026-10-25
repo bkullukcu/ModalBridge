@@ -1,0 +1,39 @@
+[build-system]
+requires = ["setuptools>=77", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "modalbridge"
+version = "0.9.2"
+description = "Auditable complex response-shape correspondence across structural configurations with explicit abstention."
+readme = "README.md"
+requires-python = ">=3.10"
+license = "MIT"
+dependencies = ["numpy>=1.24", "scipy>=1.10", "pandas>=1.5", "matplotlib>=3.6"]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Operating System :: OS Independent",
+    "Topic :: Scientific/Engineering",
+]
+keywords = ["research-software", "reproducibility", "acoustics", "vibration"]
+
+[project.optional-dependencies]
+dev = ["build>=1", "pytest>=7", "twine>=5", "tomli>=2; python_version < '3.11'"]
+docs = ["mkdocs>=1.6"]
+
+external = ["h5py>=3.9"]
+
+[project.scripts]
+modalbridge = "modalbridge.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-ra"

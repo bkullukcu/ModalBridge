@@ -1,0 +1,18 @@
+{
+  "quantity_kind": "resonance_response",
+  "reference_frame": "lab-frame-2026",
+  "frequency_unit": "Hz",
+  "coordinate_unit": "mm",
+  "response_unit": "m/s/N (synthetic example)",
+  "columns": {
+    "candidate": "peak_id",
+    "point": "sensor_location",
+    "direction": "axis",
+    "frequency": "hz",
+    "real": "h_real",
+    "imag": "h_imag",
+    "x": "x_mm",
+    "y": "y_mm",
+    "z": "z_mm"
+  }
+}
