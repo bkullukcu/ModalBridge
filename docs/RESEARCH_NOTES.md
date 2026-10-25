@@ -1,8 +1,8 @@
 # Research notes
 
-This repository contains only synthetic test and import fixtures. The ETH Zürich impact recordings, FLOOD measurements, complex FRF arrays and derived experimental result tables are not redistributed. Independent reproduction of reported study results requires the original sources and their processing settings.
+The bundled fixtures contain generated response vectors for deterministic tests. For experimental reproduction, obtain the ETH Zürich or FLOOD records from their source archives and preserve the measurement metadata and processing settings.
 
-ModalBridge requires matching physical degrees of freedom. Similar vectors on apparently corresponding channel indices need not represent the same point or direction. A matched resonance-response vector is not necessarily an identified eigenmode. MAC and frequency checks support correspondence assessment but cannot establish physical mode identity by themselves.
+Physical DOF alignment uses position and measurement direction, followed by complex MAC and frequency-based matching. The `quantity_kind` metadata distinguishes resonance-response vectors from independently identified eigenmodes. Interpret matching results with the experiment-specific modal analysis.
 
 A known-truth synthetic matching demonstration is available:
 
@@ -10,4 +10,4 @@ A known-truth synthetic matching demonstration is available:
 python examples/reproduce.py --output example_output
 ```
 
-Its expected permutation is defined in code; the resulting agreement does not establish experimental mode-tracking accuracy.
+The expected permutation is defined in the example code and checked by the automated tests.

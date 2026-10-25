@@ -4,7 +4,7 @@
 
 - Added a synthetic complex-MAC matrix and a correspondence plot with an explicitly unmatched reference.
 - Added a standalone figure regeneration script, a short FAQ and figure validation tests.
-- No change to the matching or DOF audit implementation.
+- Matching and DOF audit algorithms retained.
 
 
 ## 0.9.2 — release candidate

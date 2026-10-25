@@ -1,6 +1,6 @@
-# Importing measured response and modal vectors
+# Importing response and modal vectors
 
-ModalBridge matches **explicitly aligned physical DOFs**, not vectors that merely share row indices. An impact-derived response vector is a **resonance response**, not necessarily a structural eigenmode. The input schema retains this distinction.
+ModalBridge compares complex shapes on aligned physical degrees of freedom (DOFs). Every input channel identifies a physical point and measurement direction. The `quantity_kind` field distinguishes resonance-response vectors (`resonance_response`) from independently identified mode shapes (`identified_mode`).
 
 ## Quick start
 
@@ -14,17 +14,17 @@ modalbridge audit-inputs ref.npz cand.npz --tolerance-m 0.0001
 modalbridge ref.npz cand.npz --output matches.json
 ```
 
-Outputs are compatible with the original `load_modes()` API: `frequency` (candidate), complex `shapes` (physical DOF, candidate), `dof_ids` (physical point + direction). Additional arrays describe mode candidate IDs, coordinate reference frame, physical quantity and optional sensor positions in metres. Sidecar files `*.npz.manifest.json` contain raw/mapping/output SHA-256 values.
+The resulting NPZ files are compatible with `load_modes()`: `frequency` (candidate), complex `shapes` (physical DOF, candidate) and `dof_ids` (physical point and direction). Additional arrays record candidate IDs, frame, physical quantity and optional sensor positions in metres. Each `*.npz.manifest.json` records input and output hashes.
 
 ## CSV schema
 
-Each row is one **candidate × physical point × response direction**. Map `candidate`, `point`, `direction`, `frequency`, `real`, `imag`; optionally x/y/z positions (all or none). `direction` must be one of X/Y/Z, **in a common declared reference frame**. ID `P03|Y` is generated from point `P03` and direction `Y`, which prevents comparing X and Y displacement/velocity by accident.
+Each CSV row describes one candidate × physical point × direction. Map `candidate`, `point`, `direction`, `frequency`, `real`, `imag` and optionally x/y/z coordinates. Direction takes `X`, `Y` or `Z` in a declared common reference frame. For example, point `P03` measured along Y receives the DOF ID `P03|Y`.
 
-Declare `quantity_kind` as `identified_mode` **only if independently identified**; otherwise `resonance_response`. Also supply `reference_frame`, `frequency_unit` (`Hz`/`kHz`), `response_unit` and `coordinate_unit` (`m`, `mm` or `not_available`). At a given candidate frequency, frequency values must agree across all DOFs and every candidate must cover all DOFs. Response vectors with zero norm are rejected.
+Choose `quantity_kind` (`resonance_response` or `identified_mode`) from the measurement and analysis procedure. Also declare `reference_frame`, `frequency_unit` (`Hz`/`kHz`), `response_unit` and `coordinate_unit` (`m`, `mm` or `not_available`). For each candidate, supply a complete set of DOFs with consistent frequencies and finite, nonzero response vectors.
 
 ## NumPy input
 
-NPZ arrays: `frequency` (M), `shapes` (D,M) complex, `dof_ids` (D) explicitly `physical-point|X/Y/Z`, `mode_ids` (M); optional `coordinates` (D,3). The JSON schema remains mandatory because a numeric array alone cannot establish frame, physical meaning or units. No pickle/object arrays are accepted.
+NPZ arrays are `frequency` (M), `shapes` (D, M) complex, `dof_ids` (D) as `physical-point|X/Y/Z`, `mode_ids` (M) and optionally `coordinates` (D, 3). The JSON schema supplies the corresponding physical units and reference frame. Use numerical and string arrays.
 
 ```python
 from modalbridge.user_data import convert, audit_pair
@@ -32,12 +32,12 @@ convert('own_modes.csv', 'own_schema.json', 'own_modes.npz')
 print(audit_pair('reference.npz', 'own_modes.npz', tolerance_m=1e-4))
 ```
 
-## Physical-coordinate checks
+## Coordinate and direction alignment
 
-`audit-inputs` refuses different reference-frame labels, insufficient common physical DOFs, coordinates on only one side, or contradictory positions for common IDs. It does **not** geometrically register datasets, rotate complex vector components, infer fiducial correspondences or prove eigenmode identity. If no coordinates were measured on either side, it labels them as **not verified** rather than claiming agreement. A passing audit is necessary, not sufficient, for physical identity. Later MAC and frequency matches are mathematical correspondences conditional on the data supplied.
+The `audit-inputs` command checks declared reference frames, shared physical DOF identifiers and available coordinates using the requested tolerance. Prepare a common coordinate frame and measurement directions before import. For data with channel identifiers and absent measured coordinates, the audit records the coordinate verification status as `not verified`.
 
 ## Magnitude/phase exports
 
-Measured **linear** magnitude and phase CSVs may use `"complex_format": "magnitude_phase"` with `magnitude` and `phase` column mappings plus explicit `phase_unit` (`degree`/`radian`), `phase_sign` (`1`/`-1`) and `phase_reference`. These declarations prevent tacit reversal of complex phase. NumPy `shapes` must have complex dtype unless `allow_real_only: true` is explicitly declared; missing phases must not silently become zero.
+For linear magnitude/phase CSVs, set `"complex_format": "magnitude_phase"` and map the `magnitude` and `phase` columns. Declare `phase_unit` (`degree` or `radian`), `phase_sign` (`1` or `-1`) and `phase_reference`. The importer applies the recorded phase convention. NPZ shapes are complex-valued by default; `allow_real_only: true` handles deliberately real-valued inputs.
 
-Preformatted synthetic NumPy input examples are available as `examples/step3_user_data/reference_numpy.npz` and `candidate_numpy.npz` and can be passed to the same `modalbridge convert` command with the example `schema.json`.
+The bundled generated NPZ fixtures `examples/step3_user_data/reference_numpy.npz` and `candidate_numpy.npz` can be converted using `examples/step3_user_data/schema.json`.

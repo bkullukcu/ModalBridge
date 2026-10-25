@@ -1,21 +1,21 @@
-# FAQ
+# Frequently asked questions
 
-**Can two files be compared if their sensor order differs?**
+**Can measurements use different channel orders?**
 
-Yes, if each row has a unique physical DOF ID and the same ID means the same physical point *and* measurement direction. The library aligns by identifiers rather than row positions.
+Yes. Each channel is identified by a physical point and measurement direction. ModalBridge aligns the two matrices using these DOF identifiers.
 
-**Does a large MAC mean the structure is healthy?**
+**How should I interpret a high MAC value?**
 
-No. MAC describes similarity between spatial vectors on comparable DOFs. It does not by itself identify damage or establish that two response vectors are the same eigenmode.
+MAC measures spatial similarity between complex vectors on aligned DOFs. Review it alongside candidate frequencies, mode-identification results and the structural test configuration.
 
-**What if the measuring coordinate systems have changed?**
+**What should I do when the coordinate frame has changed?**
 
-The input audit checks declared frames and coordinates. Resolve physical registration and sensor-direction differences before matching. The command-line input audit does not transform one coordinate system into the other.
+Transform both measurements into a common physical frame before importing them. The input audit then checks declared frame labels and any available point coordinates.
 
-**Why can a reference remain unmatched?**
+**Why does the matcher leave some responses unmatched?**
 
-Assignment includes a rejection alternative. A candidate may fail the MAC threshold, exceed the frequency shift bound or be less defensible than leaving the reference unmatched.
+The assignment includes an unmatched option. It is selected when candidate pairs fall outside the specified MAC or frequency thresholds, or when the combined assignment favours leaving a reference free.
 
-**Are the README figures measured modal results?**
+**How were the README figures generated?**
 
-No. The example constructs complex orthogonal response vectors and deliberately omits one correspondence. It is a deterministic software demonstration only.
+`python examples/make_readme_figures.py` builds complex synthetic response vectors with a known permutation and one deliberately unmatched reference. The example exercises the same matching functions used for imported measurements.
