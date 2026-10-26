@@ -2,6 +2,8 @@
 
 **Complex vibration-response correspondence with explicit DOF checks and the option to reject a match.**
 
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.23661623.svg)](https://doi.org/10.5281/zenodo.23661623)
+
 ModalBridge compares response shapes recorded under different structural configurations. It aligns vectors by physical degree-of-freedom (DOF) identifiers, computes a complex MAC matrix and proposes frequency-constrained correspondences. The assignment can leave ambiguous candidates unmatched. Input metadata distinguishes resonance responses from independently identified modes.
 
 **Research software preview · v0.9.2 · Python 3.10–3.13 · MIT**
