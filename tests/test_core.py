@@ -23,6 +23,12 @@ class TestMatching(unittest.TestCase):
   with self.assertRaises(ValueError):ModeSet([1],np.ones((3,1)),('a','a','b'))
  def test_stability(self):
   rng=np.random.default_rng(1);q=np.linalg.qr(rng.normal(size=(20,3)))[0];a=ModeSet([40,70,100],q,tuple(map(str,range(20))));r=assignment_stability(a,a,n_boot=20);np.testing.assert_allclose(r['frequency'].sum(1),1);np.testing.assert_allclose(np.diag(r['frequency'][:,:3]),1)
+ def test_nonfinite_matching_parameters_rejected(self):
+  for key in ('min_mac','max_relative_shift','frequency_weight','unmatched_cost','ambiguity_margin'):
+   for invalid in (np.nan,np.inf,-np.inf):
+    with self.subTest(parameter=key,value=invalid):
+     with self.assertRaisesRegex(ValueError,'matching parameters'):
+      match_modes(self.a,self.a,**{key:invalid})
  def test_bad_export(self):
   with self.assertRaises(ValueError):parse_polytec('not a measurement')
  def test_zero_shape(self):

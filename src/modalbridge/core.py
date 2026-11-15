@@ -53,7 +53,9 @@ def match_modes(a,b,weights=None,min_mac=.6,max_relative_shift=.2,frequency_weig
     alternative-cost margin flags ambiguity; it is not a posterior probability.
     weights follow the sorted common DOF order returned by align_dofs.
     """
-    if not 0<=min_mac<=1 or max_relative_shift<0 or frequency_weight<0 or unmatched_cost<=0 or ambiguity_margin<0:raise ValueError('invalid matching parameters')
+    parameters=np.asarray([min_mac,max_relative_shift,frequency_weight,unmatched_cost,ambiguity_margin],dtype=float)
+    if not np.isfinite(parameters).all() or not 0<=min_mac<=1 or max_relative_shift<0 or frequency_weight<0 or unmatched_cost<=0 or ambiguity_margin<0:
+        raise ValueError('invalid matching parameters')
     x,y,ids=align_dofs(a,b);mac=complex_mac(x,y,weights)
     delta=abs(a.frequency[:,None]-b.frequency[None,:])/a.frequency[:,None]
     cost=1-mac+frequency_weight*delta;valid=(mac>=min_mac)&(delta<=max_relative_shift)
