@@ -93,6 +93,20 @@ Report **acceptance coverage together with selective error**: abstaining on hard
 
 The [measured-data reanalysis](docs/REAL_DATA_VALIDATION.md) provides source-file hash checks and reproducible comparison commands for the plate, ETH Zürich and FLOOD-SHAB datasets, including a required distinction between the historic FLOOD adapter cost and the package core cost. Original third-party measurements are not bundled.
 
+## Directional measurements and complete plate audit
+
+Use [sensor-frame conversion and line-of-sight checks](docs/SENSOR_FRAMES.md) when a measurement system provides calibrated 3D component axes or laser beam directions. Coordinates and response directions must be transformed consistently; a scalar LDV measurement is not automatically a Cartesian component.
+
+The [complete plate reviewer audit](examples/reviewer_plate_audit.py) exports an eight-reference table, 21-DOF AutoMAC and an optional near-frequency subspace comparison from archived processed complex vectors:
+
+```bash
+python examples/reviewer_plate_audit.py \
+  --reference without_modes.npz --candidate with_modes.npz \
+  --near-reference 3 4 --near-candidate 3 4 --output output/plate
+```
+
+The original plate time records, physical mesh and verified motor configuration are **not** reconstructed by this processed-vector audit. See [reviewer evidence status](docs/REVIEW_RESPONSE_MATRIX.md) for these outstanding records.
+
 ## Citation and license
 
 **Software authors:** Berkay Kullukcu and Dina Hannebauer. Citation metadata is provided in [`CITATION.cff`](CITATION.cff); license terms are in [`LICENSE`](LICENSE). Cite experimental datasets by their original sources.
