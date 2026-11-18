@@ -80,6 +80,17 @@ python examples/make_readme_figures.py --latex
 
 This generates both SVG figures in `docs/figures/` from the fixed synthetic example.
 
+## Reviewer-driven validation (synthetic, independent truth)
+
+The [validation supplement](docs/REVIEW_VALIDATION.md) documents an intentionally difficult synthetic task with an absent reference shape, a correlated false candidate, 40 seeded realizations and explicit false-acceptance / false-rejection counts. It is **not** experimental evidence of physical modal identity or a comparison against external modal-analysis software.
+
+```bash
+python examples/reviewer_benchmark.py --output review_output --seeds 40
+python examples/reviewer_scaling.py --output review_output --seeds 40 --repeats 5
+```
+
+Report **acceptance coverage together with selective error**: abstaining on hard cases can lower the error among accepted pairs without improving overall correspondence. Under the default MAC gate (0.6), frequency gate (0.2), frequency weight (0.2) and dummy cost (0.6), *every eligible pair costs at most 0.44*. The dummy penalty alone therefore cannot reject an isolated eligible pair. See the [reviewer action matrix](docs/REVIEW_RESPONSE_MATRIX.md) for unresolved experimental and physical-validation requirements.
+
 ## Citation and license
 
 **Software authors:** Berkay Kullukcu and Dina Hannebauer. Citation metadata is provided in [`CITATION.cff`](CITATION.cff); license terms are in [`LICENSE`](LICENSE). Cite experimental datasets by their original sources.
