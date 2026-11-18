@@ -91,6 +91,8 @@ python examples/reviewer_scaling.py --output review_output --seeds 40 --repeats 
 
 Report **acceptance coverage together with selective error**: abstaining on hard cases can lower the error among accepted pairs without improving overall correspondence. Under the default MAC gate (0.6), frequency gate (0.2), frequency weight (0.2) and dummy cost (0.6), *every eligible pair costs at most 0.44*. The dummy penalty alone therefore cannot reject an isolated eligible pair. See the [reviewer action matrix](docs/REVIEW_RESPONSE_MATRIX.md) for unresolved experimental and physical-validation requirements.
 
+The [measured-data reanalysis](docs/REAL_DATA_VALIDATION.md) provides source-file hash checks and reproducible comparison commands for the plate, ETH Zürich and FLOOD-SHAB datasets, including a required distinction between the historic FLOOD adapter cost and the package core cost. Original third-party measurements are not bundled.
+
 ## Citation and license
 
 **Software authors:** Berkay Kullukcu and Dina Hannebauer. Citation metadata is provided in [`CITATION.cff`](CITATION.cff); license terms are in [`LICENSE`](LICENSE). Cite experimental datasets by their original sources.
